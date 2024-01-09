@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-RepotestingApplication<repotesting>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.springtesting.RepotestingApplication",
+      "projectName": "repotesting",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
