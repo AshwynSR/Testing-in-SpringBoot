@@ -1,0 +1,29 @@
+name: Delete Stale Branches Manually
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  delete_old_branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches
+
+      - name: Find and List Stale Branches
+        run: |
+          THRESHOLD_DATE=$(date -d "6 months ago" +%s)  # Convert to Unix timestamp
+
+          git for-each-ref --format '%(refname:short) %(committerdate:iso8601)' refs/remotes/origin | \
+          while read -r branch last_commit_date; do
+              # Convert last commit date to Unix timestamp
+              last_commit_ts=$(date -d "$last_commit_date" +%s 2>/dev/null)
+          
+              # Compare timestamps
+              if [[ $last_commit_ts -lt $THRESHOLD_DATE ]]; then
+                  echo "$branch"  # This branch is older than 6 months
+              fi
+          done
+        
